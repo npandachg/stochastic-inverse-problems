@@ -1,12 +1,12 @@
-#!/usr/bin/en python
-
 from dolfin import *
 from numpy import *
 
 
 class meshDS(object):
 
-    """Docstring for meshDS. """
+    """wrapper class for a mesh object in Fenics. Returns
+    node to element connectivity, element centroid/volume array.
+    """
 
     def __init__(self, mesh):
         """ meshDS constructor.
@@ -50,7 +50,7 @@ class meshDS(object):
 
     def getEdges(self):
         """
-        :returns: number of elements in the mesh
+        :returns: number of edges in the mesh
         """
         return self.num_edges
 
@@ -70,7 +70,6 @@ class meshDS(object):
         return self.node_elem
 
     def getElemVCArray(self):
-
         """
         :returns: array of element volume and and an array of element
         centroid object.
@@ -96,3 +95,21 @@ class meshDS(object):
         self.vc_array_cache = True
         return self.elem_vol_array, self.elem_centroid_array
 
+
+class CharFunc(Expression):
+    """ create a characteristic function of expression type.
+    TODO: modify for 3D.
+    """
+
+    def __init__(self, region):
+        self.a = region[0]
+        self.b = region[1]
+        self.c = region[2]
+        self.d = region[3]
+
+    def eval(self, v, x):
+        v[0] = 0
+        if (x[0] >= self.a) & (x[0] <= self.b) &\
+                (x[1] >= self.c) & (x[1] <= self.d):
+            v[0] = 1
+        return v

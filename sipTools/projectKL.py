@@ -10,7 +10,9 @@ petsc4py.init()
 
 class projectKL(object):
 
-    """Docstring for projectKL. """
+    """ This class takes a mesh object and projects a covariance
+    function onto the space of "hat" functions defined on the mesh.
+    """
 
     def __init__(self, mesh):
         """projectKL constructor
@@ -26,6 +28,7 @@ class projectKL(object):
 
     def _getCovMat(self, cov_expr):
         """ Builds the covariance matrix. Private function.
+        TODO: modify for 3D.
 
         :cov_expr: Expression (dolfin) covariance function
         :returns:  PETSC matrix covariance matrix cov_mat
@@ -210,8 +213,8 @@ class projectKL(object):
         :returns: the number of terms
         """
 
-        if num_kl > self.eigen_vals.size():
-            num_kl = self.eigen_vals.size()
+        # if num_kl > np.size(self.eigen_vals):
+        #    num_kl = np.size(self.eigen_vals)
 
         if flag == "partial":
             previous = 0
