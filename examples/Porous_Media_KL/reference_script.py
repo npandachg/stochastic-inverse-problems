@@ -5,7 +5,7 @@ to invert as model selection.
 import numpy as np
 from dolfin import *
 from sipTools.projectKL import projectKL
-# import scipy.io as sio
+import scipy.io as sio
 from sipTools.samplePdeActiveVar import samplePdeActiveVar
 # Load all the data that are fixed for this problem
 execfile("examples/Porous_Media_KL/loadData.py")
@@ -47,4 +47,4 @@ active_var_samples, qoi_samples = samplePdeActiveVar(numSamplesKL,
 print np.shape(active_var_samples)[0]
 length_tot += np.shape(active_var_samples)[0]
 fname = file_name + "_" + str(etaX) + "_" + str(C)
-# sio.savemat(fname, {'QoI': qoi_samples, 'samples': active_var_samples})
+sio.savemat(fname, {'QoI': qoi_samples, 'samples': active_var_samples})

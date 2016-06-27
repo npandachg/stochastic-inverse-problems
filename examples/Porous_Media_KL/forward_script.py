@@ -1,7 +1,8 @@
 import numpy as np
 from dolfin import *
 from sipTools import projectKL
-#import scipy.io as sio
+from sipTools import samplePdeActiveVar
+import scipy.io as sio
 
 # Load all the data that are fixed for this problem
 execfile("examples/Porous_Media_KL/loadData.py")
@@ -53,7 +54,7 @@ for sample in stat_samples:
     print np.shape(active_var_samples)[0]
     length_tot += np.shape(active_var_samples)[0]
     fname = file_name + "_" + str(etaX) + "_" + str(C)
-    # sio.savemat(fname, {'QoI': qoi_samples, 'samples': active_var_samples})
+    sio.savemat(fname, {'QoI': qoi_samples, 'samples': active_var_samples})
 
 print "total length is ", length_tot
 

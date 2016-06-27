@@ -67,17 +67,11 @@ class CharFunc(Expression):
         return v
 
 # Define the QoI maps
-# First the characteristic functions
-Chi_1 = CharFunc([0.75, 1.25, 7.75, 8.25])
-Chi_2 = CharFunc([7.75, 8.25, 0.75, 1.25])
-
-# number of KL samples
-numSamplesKL = 500
-
-# set up the variance and correlation length
-var = np.linspace(0.5, 3.5, 5)
-eta = np.linspace(4, 10, 7)
-
-var_ref = 2.5
-eta_ref = 6.25
-
+# number of simple function samples
+numSamplesSimple = 500
+# 3: Define the QoI
+pt_1 = Point(7.5, 7.5)
+pt_2 = Point(2.5, 2.5)
+QoI = np.zeros([numSamplesSimple, 2])
+partition = [1, 2]
+dimension = [10.0, 10.0]

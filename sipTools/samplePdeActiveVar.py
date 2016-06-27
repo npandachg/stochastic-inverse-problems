@@ -116,7 +116,7 @@ def samplePdeActiveVar(numSamples, numKL, xi_k, mesh, KL_obj, bcs,
 
     # Generate samples in active var space
     # First generate samples of KL coefficients
-    num_pts = 100  # 10000
+    num_pts = 5000  # 10000
     v1 = np.random.standard_normal(size=(numKL, num_pts))
     # Project KL coefficients to active variables to generate samples
     sample_points = np.zeros([num_pts, 2])
