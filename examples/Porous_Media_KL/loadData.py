@@ -73,6 +73,7 @@ Chi_2 = CharFunc([7.75, 8.25, 0.75, 1.25])
 
 # number of KL samples
 numSamplesKL = 500
+activeSamples = 1000
 
 # set up the variance and correlation length
 var = np.linspace(0.5, 3.5, 5)

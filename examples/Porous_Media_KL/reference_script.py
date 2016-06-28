@@ -18,7 +18,7 @@ num_KL = 200  # mesh.num_vertices()
 
 count = 0
 length_tot = 0
-file_name = "reference data"
+file_name = "reference_data"
 
 # compute the covariance expression
 etaX = eta_ref

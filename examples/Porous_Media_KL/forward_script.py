@@ -43,6 +43,7 @@ for sample in stat_samples:
     xi_k = np.random.standard_normal(size=(size_kl, numSamplesKL))
     # pass all the loaded data to your own function
     active_var_samples, qoi_samples = samplePdeActiveVar(numSamplesKL,
+                                                         activeSamples,
                                                          size_kl,
                                                          xi_k,
                                                          mesh,
