@@ -20,7 +20,9 @@ param_dim = 2
 lam_domain = np.repeat([[1.0, 2.0]], param_dim, axis=0)
 
 # sample data
-sample_data = sio.loadmat("Subsurface_1x2.mat")
+path_name = "outfiles/SimpleFunc_Files/"
+fname = path_name + "Subsurface_1x2.mat"
+sample_data = sio.loadmat(fname)
 data = sample_data['QoI']
 samples = sample_data['samples']
 samples = samples.transpose()
@@ -28,7 +30,8 @@ samples = samples.transpose()
 random_sample = True
 
 # reference QoI
-ref_data = sio.loadmat("Subsurface_ref.mat")
+fname = path_name + "Subsurface_ref.mat"
+ref_data = sio.loadmat(fname)
 Q_ref = ref_data['QoI_ref']
 Q_ref = [Q_ref[0, 0], Q_ref[0, 1]]
 

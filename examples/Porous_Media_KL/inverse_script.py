@@ -49,7 +49,7 @@ count      :  index for the number of cases
 reference dictionary : gives the dictionary of case number to the
                        variance and correlation length
 '''
-
+path_name = "outfiles/KL_files/"
 count = 0
 case_list = []
 reference_dict = {}
@@ -60,7 +60,7 @@ for sample in stat_samples:
 
     C = sample[0]
     etaX = sample[1]
-    fname = file_name + "_" + str(etaX) + "_" + str(C)
+    fname = path_name + file_name + "_" + str(etaX) + "_" + str(C)
 
     # create the case list
     case_list.append(C)
@@ -109,7 +109,7 @@ for sample in stat_samples:
     count += 1
 
 # modify this : get this from reference_script
-fname = "reference_data" + "_" + str(etaX) + "_" + str(C)
+fname = path_name + "reference_data" + "_" + str(eta_ref) + "_" + str(var_ref)
 QoI_num = 2
 # read in the reference data
 m = sio.loadmat(fname)
