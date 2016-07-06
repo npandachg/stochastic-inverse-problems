@@ -12,7 +12,7 @@ The random field is approximated using simple functions
 '''
 
 # Load all the data that are fixed for this problem
-execfile("examples/Porous_Media_KL/loadData.py")
+execfile("examples/Porous_Media_SimpleFuncs/loadData.py")
 
 # create a simple function object
 rect_simple_func = rectSimpleFunc(mesh, partition, dimension)

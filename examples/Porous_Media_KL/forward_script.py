@@ -1,7 +1,7 @@
 import numpy as np
 from dolfin import *
-from sipTools import projectKL
-from sipTools import samplePdeActiveVar
+from sipTools.projectKL import projectKL
+from sipTools.samplePdeActiveVar import samplePdeActiveVar
 import scipy.io as sio
 
 # Load all the data that are fixed for this problem

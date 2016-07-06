@@ -9,7 +9,7 @@ The perm_field is fixed here and is a linear function in y:
   perm_field = a0 + a1*y
 '''
 # Load all the data that are fixed for this problem
-execfile("examples/Porous_Media_KL/loadData.py")
+execfile("examples/Porous_Media_SimpleFuncs/loadData.py")
 a0 = 1.25
 a1 = 0.04
 

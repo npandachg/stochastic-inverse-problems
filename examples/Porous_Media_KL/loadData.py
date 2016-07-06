@@ -7,7 +7,8 @@ nx = 31
 ny = 31
 p0 = Point(0.0, 0.0)
 p1 = Point(10.0, 10.0)
-mesh = RectangleMesh(p0, p1, nx, ny)
+mesh = RectangleMesh(0.0, 0.0, 10.0, 10.0, nx, ny)
+# mesh = RectangleMesh(p0, p1, nx, ny)
 # initialize the mesh to generate connectivity
 mesh.init()
 
