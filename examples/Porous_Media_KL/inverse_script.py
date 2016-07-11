@@ -2,12 +2,30 @@ import numpy as np
 import scipy.io as sio
 import bet.calculateP.simpleFunP as simpleFunP
 import bet.calculateP.calculateP as calculateP
+import bet.sample as samp
+import bet.postProcess.plotP as plotP
+import bet.postProcess.plotDomains as plotD
 from mpi4py import MPI
 from sipTools import *
+import matplotlib
+matplotlib.use('pdf')
+matplotlib.use('Agg')
 comm = MPI.COMM_WORLD
 
 # Load all the data that are fixed for this problem
-execfile("examples/Porous_Media_KL/loadData.py")
+# execfile("examples/Porous_Media_KL/loadData.py")
+# set up the variance and correlation length
+var = np.linspace(0.5, 3.5, 5)
+eta = np.linspace(4, 10, 7)
+
+var_ref = 2.5
+eta_ref = 6.25
+
+param_ref = np.array([var_ref, eta_ref])
+
+# number of KL samples
+numSamplesKL = 500
+activeSamples = 1000
 
 # define samples for correlation length and variance
 
@@ -121,23 +139,43 @@ Q_ref = np.zeros(2)
 Q_ref = [q0, q1]
 # Q_ref = [-1, 2]
 
-deterministic_discretize_D = True
+# OLD: deterministic_discretize_D = True
 
-bin_size = [0.1, 0.1]
-output_box = np.zeros([QoI_num, 2])
-output_box[:, 0] = [Q_ref[0] - bin_size[0] / 2., Q_ref[0] + bin_size[0] / 2.]
-output_box[:, 1] = [Q_ref[1] - bin_size[1] / 2., Q_ref[1] + bin_size[1] / 2.]
+# bin_size = [0.1, 0.1]
+# output_box = np.zeros([QoI_num, 2])
+# output_box[:, 0] = [Q_ref[0] - bin_size[0] / 2., Q_ref[0] + bin_size[0] / 2.]
+# output_box[:, 1] = [Q_ref[1] - bin_size[1] / 2., Q_ref[1] + bin_size[1] / 2.]
 
-(d_distr_prob, d_distr_samples, d_Tree) = simpleFunP.uniform_hyperrectangle_user(data=data, domain=output_box, center_pts_per_edge=1)
+# (d_distr_prob, d_distr_samples, d_Tree) = simpleFunP.uniform_hyperrectangle_user(data=data, domain=output_box, center_pts_per_edge=1)
 
+# create inupt and output samples
+input_samples = samp.sample_set(2)
+input_samples.set_domain(np.array([[0.125, 3.875], [3.5, 10.5]]))
+input_samples.set_values(samples)
+# associate volume
+input_samples.estimate_volume_mc()
 
-# calculate probablities
-(P, lambda_emulate, io_ptr) = calculateP.prob(samples=samples,
-                                              data=data,
-                                              rho_D_M=d_distr_prob,
-                                              d_distr_samples=d_distr_samples,
-                                              d_Tree=d_Tree)
+output_samples = samp.sample_set(2)
+output_samples.set_values(data)
 
+# create a discretization object
+my_discretization = samp.discretization(input_sample_set=input_samples,
+                                        output_sample_set=output_samples)
+
+randomDataDiscretization = False
+if randomDataDiscretization is False:
+    simpleFunP.regular_partition_uniform_distribution_rectangle_size(
+        data_set=my_discretization, Q_ref=Q_ref, rect_size=0.1,
+        center_pts_per_edge=1)
+else:
+    simpleFunP.uniform_partition_uniform_distribution_rectangle_size(
+        data_set=my_discretization, Q_ref=Q_ref, rect_size=0.1,
+        M=50, num_d_emulate=1E5)
+
+# calculate the induced probability
+calculateP.prob(my_discretization)
+samp.save_discretization(my_discretization, "my_disc")
+P = input_samples.get_probabilities()
 
 case = []
 discrete_prob = np.zeros((np.size(var), np.size(eta)))
@@ -166,5 +204,6 @@ for variance in var:
         j += 1
     i += 1
 
+
 # save the matrix as a mat file
-sio.savemat('discProbMatrix_case.mat', dict(x=discrete_prob))
+sio.savemat('discProbMatrix_case_test.mat', dict(x=discrete_prob))
