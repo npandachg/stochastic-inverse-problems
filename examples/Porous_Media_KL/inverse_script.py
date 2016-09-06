@@ -18,13 +18,15 @@ comm = MPI.COMM_WORLD
 var = np.linspace(0.5, 3.5, 5)
 eta = np.linspace(4, 10, 7)
 
-var_ref = 2.5
-eta_ref = 6.25
+# var_ref = 2.5
+# eta_ref = 6.25
+var_ref = 1.0
+eta_ref = 9.2
 
 param_ref = np.array([var_ref, eta_ref])
 
 # number of KL samples
-numSamplesKL = 500
+numSamplesKL = 300
 activeSamples = 1000
 
 # define samples for correlation length and variance
@@ -162,48 +164,49 @@ output_samples.set_values(data)
 my_discretization = samp.discretization(input_sample_set=input_samples,
                                         output_sample_set=output_samples)
 
-randomDataDiscretization = False
-if randomDataDiscretization is False:
-    simpleFunP.regular_partition_uniform_distribution_rectangle_size(
-        data_set=my_discretization, Q_ref=Q_ref, rect_size=0.1,
+
+file_name_base = "KL_cor_var_inverse_rscale"
+disc_name_base = "disc_prob"
+for scale in range(1):
+    scale = 5
+    fact = 2 ** scale
+    fname = file_name_base + "_p05d" + str(fact)
+    fname2 = disc_name_base + "_p05d" + str(fact)
+
+    simpleFunP.regular_partition_uniform_distribution_rectangle_scaled(
+        data_set=my_discretization, Q_ref=Q_ref, rect_scale=0.05 / fact,
         center_pts_per_edge=1)
-else:
-    simpleFunP.uniform_partition_uniform_distribution_rectangle_size(
-        data_set=my_discretization, Q_ref=Q_ref, rect_size=0.1,
-        M=50, num_d_emulate=1E5)
 
-# calculate the induced probability
-calculateP.prob(my_discretization)
-samp.save_discretization(my_discretization, "my_disc")
-P = input_samples.get_probabilities()
+    # calculate the induced probability
+    calculateP.prob(my_discretization)
+    samp.save_discretization(my_discretization, fname)
+    P = input_samples.get_probabilities()
 
-case = []
-discrete_prob = np.zeros((np.size(var), np.size(eta)))
+    case = []
+    discrete_prob = np.zeros((np.size(var), np.size(eta)))
 
-'''
- discrete_prob[i][j][k] = prob of i^th variance, j^th correlation length
-'''
-i = 0
-j = 0
-for variance in var:
+    '''
+     discrete_prob[i][j][k] = prob of i^th variance, j^th correlation length
+    '''
+    i = 0
     j = 0
-    for corr in eta:
-        case.append(variance)
-        case.append(corr)
-        # check which case number this corresponds to
-        for key in reference_dict:
-            if reference_dict[key] == case:
-                case_num = key
-                break
-        case = []
-        if case_num == 0:
-            stride = 0
-        else:
-            stride = np.sum(vec_length[0:case_num])
-        discrete_prob[i][j] = sum(P[stride:stride + vec_length[case_num], ])
-        j += 1
-    i += 1
-
-
-# save the matrix as a mat file
-sio.savemat('discProbMatrix_case_test.mat', dict(x=discrete_prob))
+    for variance in var:
+        j = 0
+        for corr in eta:
+            case.append(variance)
+            case.append(corr)
+            # check which case number this corresponds to
+            for key in reference_dict:
+                if reference_dict[key] == case:
+                    case_num = key
+                    break
+            case = []
+            if case_num == 0:
+                stride = 0
+            else:
+                stride = np.sum(vec_length[0:case_num])
+            discrete_prob[i][j] = sum(P[stride:stride + vec_length[case_num], ])
+            j += 1
+        i += 1
+    # save the matrix as a mat file
+    sio.savemat(fname2, dict(x=discrete_prob))

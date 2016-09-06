@@ -4,6 +4,7 @@ from sipTools.solvePDERandomField import solvePoissonRandomField
 from sipTools.rectSimpleFunc import rectSimpleFunc
 import scipy.io as sio
 import bet.calculateP.calculateP as calculateP
+import bet.sampling.basicSampling as bs
 
 '''
 This script solves a poisson equation with a random field.
@@ -20,9 +21,15 @@ rect_simple_func = rectSimpleFunc(mesh, partition, dimension)
 param_dim = rect_simple_func.num_basis
 lam_domain = np.repeat([[1.0, 2.0]], param_dim, axis=0)
 
-coeff_samples = calculateP.emulate_iid_lebesgue(lam_domain=lam_domain,
-                                                num_l_emulate=numSamplesSimple)
+inp_samples = bs.random_sample_set(r, lam_domain, numSamplesSimple)
+
+coeff_samples = inp_samples.get_values()
 coeff_samples = coeff_samples.transpose()
+print np.shape(coeff_samples)
+
+# coeff_samples = calculateP.emulate_iid_lebesgue(lam_domain=lam_domain,
+                                                # num_l_emulate=numSamplesSimple)
+# coeff_samples = coeff_samples.transpose()
 
 """
 for each sample of the coefficients, generate the simple function

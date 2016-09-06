@@ -7,8 +7,8 @@ nx = 31
 ny = 31
 p0 = Point(0.0, 0.0)
 p1 = Point(10.0, 10.0)
-mesh = RectangleMesh(0.0, 0.0, 10.0, 10.0, nx, ny)
-# mesh = RectangleMesh(p0, p1, nx, ny)
+# mesh = RectangleMesh(0.0, 0.0, 10.0, 10.0, nx, ny)
+mesh = RectangleMesh(p0, p1, nx, ny)
 # initialize the mesh to generate connectivity
 mesh.init()
 
@@ -69,17 +69,19 @@ class CharFunc(Expression):
 
 # Define the QoI maps
 # First the characteristic functions
-Chi_1 = CharFunc([0.75, 1.25, 7.75, 8.25])
-Chi_2 = CharFunc([7.75, 8.25, 0.75, 1.25])
+#  right bottom
+Chi_1 = CharFunc([8.9, 9.1, 0.9, 1.1])
+#  right top
+Chi_2 = CharFunc([8.9, 9.1, 8.9, 9.1])
 
 # number of KL samples
-numSamplesKL = 500
+numSamplesKL = 300
 activeSamples = 1000
 
 # set up the variance and correlation length
 var = np.linspace(0.5, 3.5, 5)
 eta = np.linspace(4, 10, 7)
 
-var_ref = 2.5
-eta_ref = 6.25
+var_ref = 1.0
+eta_ref = 9.2
 

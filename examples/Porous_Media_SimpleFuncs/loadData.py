@@ -8,8 +8,8 @@ nx = 31
 ny = 31
 p0 = Point(0.0, 0.0)
 p1 = Point(10.0, 10.0)
-mesh = RectangleMesh(0.0, 0.0, 10.0, 10.0, nx, ny)
-# mesh = RectangleMesh(p0, p1, nx, ny)
+# mesh = RectangleMesh(0.0, 0.0, 10.0, 10.0, nx, ny)
+mesh = RectangleMesh(p0, p1, nx, ny)
 # initialize the mesh to generate connectivity
 mesh.init()
 
@@ -75,5 +75,6 @@ numSamplesSimple = 500
 pt_1 = Point(7.5, 7.5)
 pt_2 = Point(2.5, 2.5)
 QoI = np.zeros([numSamplesSimple, 2])
+# partition = [1, 2]
 partition = [1, 2]
 dimension = [10.0, 10.0]
